@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Medicine Recommender</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: url('blue.png');
+      background-size: cover;
+      background-position: center;
+      animation: fadeIn 2s ease-in-out;
+    }
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+      animation: scaleUp 1s ease-in-out;
+      width: 400px;
+    }
+    input, button {
+      margin: 10px;
+      padding: 10px;
+      width: 90%;
+      border: 2px solid #007BFF;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    label {
+      display: block;
+      text-align: left;
+      margin-left: 5%;
+      font-weight: bold;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+      animation: bounce 1.5s infinite;
+    }
+    button:hover {
+      background-color: #0056b3;
+      transform: scale(1.1);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes scaleUp {
+      from { transform: scale(0.8); }
+      to { transform: scale(1); }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Personalized Medicine Recommender</h2>
+
+    <label for="reason">Enter Reason:</label>
+    <input type="text" id="reason" placeholder="E.g., Fever" />
+
+    <label for="description">Enter Description (optional):</label>
+    <input type="text" id="description" placeholder="E.g., chills, high temp" />
+
+    <button onclick="getMedicine()">Get Medicine</button>
+
+    <h3>Recommended Medicine:</h3>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    async function getMedicine() {
+      const reason = document.getElementById('reason').value.trim();
+      const description = document.getElementById('description').value.trim();
+
+      if (!reason) {
+        alert("Please enter a reason.");
+        return;
+      }
+
+      // UI animation
+      document.body.style.transform = "scale(1.02)";
+      setTimeout(() => {
+        document.body.style.transform = "scale(1)";
+      }, 200);
+
+      try {
+        const response = await fetch("http://127.0.0.1:5000/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ reason: reason, description: description })
+        });
+
+        if (!response.ok) {
+          const err = await response.json();
+          document.getElementById("result").innerText = "Error: " + (err.error || "Unknown error");
+          return;
+        }
+
+        const data = await response.json();
+        document.getElementById("result").innerText = data.recommended_medicine || "No recommendation found.";
+
+      } catch (error) {
+        document.getElementById("result").innerText = "Request failed: " + error.message;
+      }
+    }
+  </script>
+</body>
+</html>
