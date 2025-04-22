@@ -6,5 +6,9 @@ In the feature extraction stage, critical attributes such as symptoms, allergies
 The model is trained and validated using performance metrics such as cosine similarity scores, accuracy, and relevance of recommendation. Its ability to understand and evaluate semantic relationships in text allows it to generate highly relevant and personalized outputs.
 This system demonstrates the practical application of NLP and machine learning in healthcare, offering a scalable solution that can be integrated into electronic medical platforms to support doctors and clinical staff in delivering safe, efficient, and patient-centered care.
 
+
+https://github.com/user-attachments/assets/1eab791b-57da-4322-809b-c94e7e7dc098
+
+
 for reports and files contact me..
 special thanks : @dhrupad17
